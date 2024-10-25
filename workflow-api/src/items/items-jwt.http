@@ -1,0 +1,44 @@
+# items-jwt.http
+### auth login
+
+# @name login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "u1002",
+    "password": "changeit"
+}
+
+###
+@authToken = {{login.response.body.access_token}}
+
+
+### find all
+GET http://localhost:3000/items
+Authorization: Bearer {{authToken}}
+
+
+### approve
+PATCH http://localhost:3000/items/3/approve
+Authorization: Bearer {{authToken}}
+
+
+###
+### Admin Zone
+###
+# @name loginAdmin
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "a1001",
+    "password": "changeit"
+}
+
+###
+@authTokenAdmin = {{loginAdmin.response.body.access_token}}
+
+### find all
+PATCH http://localhost:3000/items/3/approve
+Authorization: Bearer {{authTokenAdmin}}

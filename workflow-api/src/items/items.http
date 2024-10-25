@@ -1,0 +1,31 @@
+# items.http
+### create
+POST http://localhost:3000/item
+Content-Type: application/json
+
+{
+    "title": "Fan",
+    "amount": 100,
+    "quantity": 40,
+    "status": "active"
+}
+
+### get
+GET http://localhost:3000/item
+
+
+### update
+PATCH http://localhost:3000/item/4
+Content-Type: application/json
+
+{
+    "title": "Mouse wireless",
+    "amount": 200
+}
+
+### delete
+DELETE http://localhost:3000/item/1
+
+
+### get by status
+GET http://localhost:3000/item/status/

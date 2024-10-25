@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  # Service สำหรับ Node.js
+  app:
+    container_name: workflow-api-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env  # ใช้ .env เพื่อกำหนด Environment Variables
+    ports:
+      - '3000:3000'  # เปิด Port 3000 สำหรับเข้าแอป
+    depends_on:
+      - db  # ให้ขึ้นต่อ db service (Postgres)
+    networks:
+      - app-network
+
+  # Service สำหรับ PostgreSQL
+  db:
+    container_name: workflow-api-db
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}  # ค่าจาก .env
+      POSTGRES_PASSWORD: ${DB_PASSWORD}  # ค่าจาก .env
+      POSTGRES_DB: ${DB_DATABASE}  # ค่าจาก .env
+    ports:
+      - '5433:5432'  # เปิด Port สำหรับเชื่อมต่อจากภายนอก (map 5433->5432)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # เก็บข้อมูลใน volume เพื่อไม่ให้สูญหายเมื่อคอนเทนเนอร์ถูกลบ
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
